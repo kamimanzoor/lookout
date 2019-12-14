@@ -21,6 +21,13 @@ services:
     network_mode: "host"
     ports:
       - "9930:9930"
+  sonar-check:
+    image: "srcd/lookout-sonarcheck-analyzer:latest"
+    network_mode: "host"
+    ports:
+      - "9929:9929"
+    environment:
+      SONARCHECK_PORT: 9929
   bblfsh:
     image: "bblfsh/bblfshd:v2.12.1-drivers"
     privileged: true
