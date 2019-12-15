@@ -13,21 +13,24 @@ services:
       - "10301:10301"
     entrypoint: ["/bin/sh"]
     # sleep because container with db is up but the db itself doesn't accept connections yet
-    command: ["-c", "sleep 5 && lookoutd migrate && lookoutd serve"]
+    command: ["-c", "sleep 25 && lookoutd migrate && lookoutd serve"]
     volumes:
-      - ./config.yml:/config.yml
+      #- ./config.yml:/config.yml
+      - /lookout/config.yml:/config.yml
+      # current direc needs to mapped to /lookout in docker machine (oracle vm)
   dummy:
     image: "srcd/lookout-dummy-analyzer:latest"
     network_mode: "host"
     ports:
       - "9930:9930"
   sonar-check:
-    image: "srcd/lookout-sonarcheck-analyzer:latest"
+    image: "kamimanzoor/lookout-sonarcheck-analyzer:latest"
     network_mode: "host"
     ports:
       - "9929:9929"
     environment:
       SONARCHECK_PORT: 9929
+      SONARCHECK_LOG_LEVEL: "debug"
   bblfsh:
     image: "bblfsh/bblfshd:v2.12.1-drivers"
     privileged: true
