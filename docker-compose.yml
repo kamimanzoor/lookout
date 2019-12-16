@@ -13,7 +13,7 @@ services:
       - "10301:10301"
     entrypoint: ["/bin/sh"]
     # sleep because container with db is up but the db itself doesn't accept connections yet
-    command: ["-c", "sleep 60 && lookoutd migrate && lookoutd serve"]
+    command: ["-c", "sleep 70 && lookoutd migrate && lookoutd serve"]
     volumes:
       #- ./config.yml:/config.yml
       - /lookout/config.yml:/config.yml
@@ -46,7 +46,8 @@ services:
       - "9927:9927"
     volumes:
       - /lookout/config-style-analyzer.yml:/config.yml
-    command: ["run", "lookout.style.typos", "-c", "/config.yml"]
+    entrypoint: ["/bin/sh"]
+    command: ["-c", "sleep 60 && analyzer run lookout.style.typos -c /config.yml"]
 
 
   bblfsh:
